@@ -1,0 +1,50 @@
+[
+    {
+        "quest_id": "q101",
+        "quest_name": "Clear the Dungeon",
+        "difficulty": 3,
+        "average_completion_time": 150,
+        "failure_rate": 0.14,
+        "rewards": ["Gold", "XP"]
+    },
+    {
+        "quest_id": "q102",
+        "quest_name": "Defend the Village",
+        "difficulty": 4,
+        "average_completion_time": 180,
+        "failure_rate": 0.12,
+        "rewards": ["Gold", "XP", "Item"]
+    },
+    {
+        "quest_id": "q103",
+        "quest_name": "Retrieve the Artifact",
+        "difficulty": 5,
+        "average_completion_time": 200,
+        "failure_rate": 0.10,
+        "rewards": ["Gold", "XP", "Legendary Item"]
+    },
+    {
+        "quest_id": "q104",
+        "quest_name": "Escort the Caravan",
+        "difficulty": 2,
+        "average_completion_time": 120,
+        "failure_rate": 0.18,
+        "rewards": ["Gold"]
+    },
+    {
+        "quest_id": "q105",
+        "quest_name": "Infiltrate the Fortress",
+        "difficulty": 3,
+        "average_completion_time": 160,
+        "failure_rate": 0.15,
+        "rewards": ["XP", "Item"]
+    },
+    {
+        "quest_id": "q106",
+        "quest_name": "Storm the Castle",
+        "difficulty": 4,
+        "average_completion_time": 170,
+        "failure_rate": 0.13,
+        "rewards": ["Gold", "XP", "Weapon"]
+    }
+]
