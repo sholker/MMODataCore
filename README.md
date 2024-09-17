@@ -6,6 +6,26 @@ This project is designed to manage and analyze data for the MMODataCore MMORPG. 
 
 ## Components
 
+#### Methods:
+- `check_for_duplicate(document)`: Checks if a document already exists in the collection.
+- `insert_data(data)`: Inserts data into the collection, avoiding duplicates.
+
+### `QueryType` (Enum)
+
+The `QueryType` enum defines the types of queries that can be executed on the MongoDB collections. Common query types include:
+- `FIND`: Used for querying documents.
+- `INSERT_ONE`: Used for inserting a single document.
+- `UPDATE_ONE`: Used for updating a single document.
+- `DELETE_ONE`: Used for deleting a single document.
+
+### `CollectionType` (Enum)
+
+The `CollectionType` enum defines the types of collections available in the project. It helps in identifying the collection type when creating query handlers. Common collection types include:
+- `PLAYER`
+- `QUEST`
+- `PLAYER_ACTION`
+- `SHARED_QUEST`
+
 ### QueryHandlerFactory
 
 `QueryHandlerFactory` is responsible for providing appropriate query handler instances based on the collection type. It centralizes the creation of query handlers, allowing the rest of the application to obtain handlers for different collections without needing to know the details of their implementation.
