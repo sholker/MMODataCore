@@ -100,4 +100,4 @@ Analyzes and displays the highest level players per country.
 ```bash
 python main.py
 ```
-For more information, please visit our [documentation]([Final Project - NoSql.pdf](Docs%2FFinal%20Project%20-%20NoSql.pdf)).
+For more information, please visit our [documentation](Docs%2FFinal%20Project%20-%20NoSql.pdf)).
