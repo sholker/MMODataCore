@@ -1,9 +1,7 @@
-# MongoDB Project
+# MMODataCore Project
 
-## Overview
-
-This project is designed to manage and analyze data in MongoDB collections for an online multiplayer game. It includes functionalities for loading data, querying MongoDB collections, and analyzing specific data metrics such as player levels and shared quests.
-
+##Overview
+The MMODataCore project is designed to manage and analyze data for an MMORPG (Massively Multiplayer Online Role-Playing Game). This project utilizes MongoDB to store and process various data related to players, quests, actions, and shared quests. It includes functionalities for loading data, querying MongoDB collections, and performing specific analyses to gain insights into player behavior and game mechanics.
 ## Components
 
 ### `QueryHandlerFactory`
