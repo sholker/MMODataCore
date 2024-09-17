@@ -1,4 +1,4 @@
-[
+db.player_action.insertMany([
     {
         "player_id": "p1",
         "action_type": "Quest Completion",
@@ -71,4 +71,4 @@
         "action_type": "Login",
         "login_date": "2024-01-21"
     }
-]
+])

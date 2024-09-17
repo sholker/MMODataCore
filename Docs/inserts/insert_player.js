@@ -1,4 +1,5 @@
-  [
+db.player.insertMany(
+    [
         {
             "player_id": "p1",
             "username": "DragonSlayer",
@@ -48,3 +49,4 @@
             "country": "USA"
         }
     ]
+)

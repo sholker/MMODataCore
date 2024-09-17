@@ -4,6 +4,7 @@ class CollectionType(Enum):
     PLAYER = "player"
     PLAYER_ACTION = "player_action"
     QUEST = "quest"
+    SHARED_QUESTS = "shared_quests"
 class QueryType(Enum):
     FIND = "find"
     AGGREGATE = "aggregate"

@@ -6,8 +6,18 @@ import json
 
 @singleton
 class PlayerQueryHandler(BaseQueryHandler):
+    INDEXES = {
+        'player': [
+            {'key': [('player_id', 1)], 'unique': True},
+            {'key': [('level', 1)]}
+        ]
+    }
+
     def __init__(self):
-        super().__init__("player")
+        super().__init__('player')
+        # Create indexes after ensuring collection creation
+        self.create_indexes()
+
 
     def get_player_from_country(self,country_name: str) -> json:
         query = {
@@ -15,12 +25,53 @@ class PlayerQueryHandler(BaseQueryHandler):
         }
         return self.collection_handler.run_query(QueryType.FIND, query=query)
 
+    def get_players_with_min_level(self, min_level: int) -> json:
+        """Retrieve players with a level greater than or equal to `min_level`."""
+        query = {
+            "level": {"$gte": min_level}
+        }
+        projection = {
+            "_id": 0,
+            "player_id": 1,
+            "username": 1,
+            "level": 1
+        }
+        return list(self.collection_handler.run_query(QueryType.FIND, query=query, projection=projection))
+
+    def get_highest_level_players_by_country(self):
+        """Retrieve the highest level player for each country."""
+        pipeline = [
+            {
+                "$group": {
+                    "_id": "$country",  # Group by country
+                    "highest_level_player": {"$first": "$$ROOT"},  # Keep the first document in each group
+                    "max_level": {"$max": "$level"}  # Calculate the maximum level
+                }
+            },
+            {
+                "$project": {
+                    "_id": 0,  # Exclude the _id field
+                    "country": "$_id",  # Include country field
+                    "username": "$highest_level_player.username",  # Include the username of the highest level player
+                    "level": "$max_level"  # Include the maximum level
+                }
+            }
+        ]
+        return list(self.collection.run_query(QueryType.AGGREGATE, pipeline=pipeline))
+
 
 
 @singleton
 class PlayerActionQueryHandler(BaseQueryHandler):
+    INDEXES = {
+        'player_action': [
+            {'key': [('player_id', 1), ('action_type', 1)]},
+            {'key': [('quest_id', 1)]}
+        ]
+    }
     def __init__(self):
         super().__init__("player_action")
+        self.create_indexes()
 
     def get_early_quests(self) -> json:
         early_quests_query = {
@@ -80,5 +131,64 @@ class PlayerActionQueryHandler(BaseQueryHandler):
 
 @singleton
 class QuestQueryHandler(BaseQueryHandler):
+    INDEXES = {
+        'quest': [
+            {'key': [('quest_id', 1)], 'unique': True}
+        ]
+    }
     def __init__(self):
         super().__init__("quest")
+        self.create_indexes()
+
+@singleton
+class SharedQuestsQueryHandler(BaseQueryHandler):
+    INDEXES = {
+        'shared_quests': [
+            {'key': [('player_ids', 1)]}
+        ]
+    }
+    def __init__(self):
+        super().__init__("shared_quests")
+        self.create_indexes()
+
+    def get_shared_quests_country_stats(self):
+        """Retrieve stats for shared quests involving players from different countries vs. the same country."""
+        pipeline = [
+            {"$unwind": "$player_ids"},
+            {
+                "$lookup": {
+                    "from": "player",
+                    "localField": "player_ids",
+                    "foreignField": "player_id",
+                    "as": "player_info"
+                }
+            },
+            {"$unwind": "$player_info"},
+            {
+                "$group": {
+                    "_id": "$quest_id",
+                    "countries": {"$addToSet": "$player_info.country"}
+                }
+            },
+            {
+                "$group": {
+                    "_id": None,
+                    "total_shared_quest_combinations_different_county": {"$sum": 1},
+                    "shared_quest_combinations_with_same_country": {
+                        "$sum": {
+                            "$cond": [{"$eq": [{"$size": "$countries"}, 1]}, 1, 0]
+                        }
+                    }
+                }
+            },
+            {
+                "$project": {
+                    "_id": 0,
+                    "total_shared_quest_combinations_different_county": 1,
+                    "shared_quest_combinations_with_same_country": 1
+                }
+            }
+        ]
+
+        return list(self.collection_handler.run_query(QueryType.AGGREGATE, pipeline=pipeline))
+

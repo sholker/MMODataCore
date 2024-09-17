@@ -1,4 +1,5 @@
-from mongoDB.queryHandler import BaseQueryHandler,PlayerQueryHandler, PlayerActionQueryHandler, QuestQueryHandler
+from mongoDB.queryHandler import BaseQueryHandler,PlayerQueryHandler, PlayerActionQueryHandler, QuestQueryHandler, \
+    SharedQuestsQueryHandler
 from mongoDB.enums import CollectionType
 class QueryHandlerFactory:
     @staticmethod
@@ -9,5 +10,7 @@ class QueryHandlerFactory:
             return PlayerActionQueryHandler()
         elif collection_name == CollectionType.QUEST.value:
             return QuestQueryHandler()
+        elif collection_name == CollectionType.SHARED_QUESTS.value:
+            return SharedQuestsQueryHandler()
         else:
             raise ValueError(f"Unknown collection name: {collection_name}")

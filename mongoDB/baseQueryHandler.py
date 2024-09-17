@@ -17,6 +17,18 @@ class BaseQueryHandler:
             print(f"An error occurred while checking for duplicates: {e}")
             return False
 
+    def create_indexes(self):
+        """Create indexes for the collection based on the INDEXES configuration."""
+        try:
+            collection = self.collection_handler.collection
+            indexes = self.INDEXES.get(self.collection_handler.collection_name, [])
+            for index in indexes:
+                key = index['key']
+                unique = index.get('unique', False)
+                collection.create_index(key, unique=unique)
+            print(f"Indexes created for {self.collection_handler.collection_name}.")
+        except Exception as e:
+            print(f"An error occurred while creating indexes: {e}")
 
     def insert_data(self, data):
         """Insert data into the collection, avoiding duplicates."""
